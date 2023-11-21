@@ -27,8 +27,8 @@ class PointModel {
     static async addPoint(latitude, longitude, nome, descricao) {
         try {
             const result = await pool.query(
-                'INTERT INTO pontos (latitude, longitude, nome, descricao) VALUES ($1, $2, $3, $4) RETURNING *',
-                [latitude, longitude,nome,descricao]
+                'INSERT INTO pontos (latitude, longitude, nome, descricao) VALUES ($1, $2, $3, $4) RETURNING *',
+                [parseFloat(latitude), parseFloat(longitude),nome,descricao]
             );
             return result.rows[0]
         } catch (error){
