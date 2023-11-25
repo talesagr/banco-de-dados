@@ -36,6 +36,33 @@ class ConnectionModel {
             throw error;
         }
     }
+
+    static async updateConnectionById(conexaooid, { pontooid_de, pontooid_para, distancia, tempo, tipo_transporte }) {
+        try {
+            const result = await pool.query(
+                'UPDATE conexoes SET pontooid_de = $1, pontooid_para = $2, distancia = $3, tempo = $4, tipo_transporte = $5 WHERE conexaooid = $6 RETURNING *',
+                [pontooid_de, pontooid_para, distancia, tempo, tipo_transporte, conexaooid]
+            );
+
+            return result.rows[0];
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static async deleteConnectionById(conexaooid) {
+        try {
+            const result = await pool.query('DELETE FROM conexoes WHERE conexaooid = $1 RETURNING *', [conexaooid]);
+
+            if (result.rows.length > 0) {
+                return result.rows[0];
+            } else {
+                return null;
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
 }
 
 module.exports = ConnectionModel;
