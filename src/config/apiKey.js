@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 module.exports = {
-    googleMapsApiKey : 'AIzaSyBUqldAgfAuYoUzKf7hD3ifXZ0pefUq2A8',
+    googleMapsApiKey : process.env.API_KEY
 }
