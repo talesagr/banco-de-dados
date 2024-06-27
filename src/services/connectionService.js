@@ -1,9 +1,9 @@
-const Connection = require('../models/Connection')
+const Connection = require('../models/Connection');
 
-class ConnectionController {
+class ConnectionService {
     static async getAllConnections() {
         try {
-            return await Connection.findAll()
+            return await Connection.findAll();
         } catch (error) {
             throw error;
         }
@@ -11,7 +11,7 @@ class ConnectionController {
 
     static async getConnectionById(conexaooid) {
         try {
-            return await Connection.findByPk(conexaooid)
+            return await Connection.findByPk(conexaooid);
         } catch (error) {
             throw error;
         }
@@ -19,24 +19,21 @@ class ConnectionController {
 
     static async addConnection(pontooid_de, pontooid_para, distancia, tempo, tipo_transporte) {
         try {
-            return await Connection.create({
-                pontooid_de,
-                pontooid_para,
-                distancia,
-                tempo,
-                tipo_transporte
-            })
+            return await Connection.create({ pontooid_de, pontooid_para, distancia, tempo, tipo_transporte });
         } catch (error) {
             throw error;
         }
     }
 
-    static async updateConnectionById(conexaooid, { pontooid_de, pontooid_para, distancia, tempo, tipo_transporte }) {
+    static async updateConnectionById(conexaooid, data) {
         try {
-            await Connection.update(data,{where:{conexaooid}})
-
-            return await Connection
-            .findByPk(conexaooid);
+            const connection = await Connection.findByPk(conexaooid);
+            if (connection) {
+                await connection.update(data);
+                return connection;
+            } else {
+                return null;
+            }
         } catch (error) {
             throw error;
         }
@@ -44,10 +41,12 @@ class ConnectionController {
 
     static async deleteConnectionById(conexaooid) {
         try {
-            const conn = await Connection.findByPk(conexaooid);
-            if (conn){
-                await conn.destroy();
-                return true
+            const connection = await Connection.findByPk(conexaooid);
+            if (connection) {
+                await connection.destroy();
+                return connection;
+            } else {
+                return null;
             }
         } catch (error) {
             throw error;
@@ -55,4 +54,4 @@ class ConnectionController {
     }
 }
 
-module.exports = ConnectionController;
+module.exports = ConnectionService;
