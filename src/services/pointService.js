@@ -15,7 +15,7 @@ class PointService {
 
     static async getPointById(id) {
         try {
-            return await sequelize.query("SELECT * FROM Points WHERE id = ?", {
+            return await sequelize.query("SELECT * FROM Points WHERE pontooid = ?", {
                 replacements: [id], 
                 type: QueryTypes.SELECT
             });
@@ -40,7 +40,7 @@ class PointService {
     static async updatePointById(id, { latitude, longitude, nome, descricao }) {
         try {
             return await sequelize.query(
-                "UPDATE Points SET latitude = ?, longitude = ?, nome = ?, descricao = ? WHERE id = ?", 
+                "UPDATE Points SET latitude = ?, longitude = ?, nome = ?, descricao = ? WHERE pontooid = ?",
                 { replacements: [latitude, longitude, nome, descricao, id] }
             );
         } catch (error) {
@@ -50,7 +50,7 @@ class PointService {
 
     static async deletePointById(id) {
         try {
-            return await sequelize.query("DELETE FROM Points WHERE id = ?", {
+            return await sequelize.query("DELETE FROM Points WHERE pontooid = ?", {
                 replacements: [id] 
             });
         } catch (error) {

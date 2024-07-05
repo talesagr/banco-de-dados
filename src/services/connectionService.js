@@ -12,7 +12,7 @@ class ConnectionService {
 
     static async getConnectionById(conexaooid) {
         try {
-            return await sequelize.query("SELECT * FROM Connections WHERE id = ?", {
+            return await sequelize.query("SELECT * FROM Connections WHERE conexaooid = ?", {
                 replacements: [conexaooid], 
                 type: QueryTypes.SELECT
             });
@@ -37,7 +37,7 @@ class ConnectionService {
     static async updateConnectionById(conexaooid, data) {
         try {
             return await sequelize.query(
-                "UPDATE Connections SET pontooid_de = ?, pontooid_para = ?, distancia = ?, tempo = ?, tipo_transporte = ? WHERE id = ?", 
+                "UPDATE Connections SET pontooid_de = ?, pontooid_para = ?, distancia = ?, tempo = ?, tipo_transporte = ? WHERE conexaooid = ?",
                 { replacements: [data.pontooid_de, data.pontooid_para, data.distancia, data.tempo, data.tipo_transporte, conexaooid] }
             );
         } catch (error) {
@@ -47,7 +47,7 @@ class ConnectionService {
 
     static async deleteConnectionById(conexaooid) {
         try {
-            return await sequelize.query("DELETE FROM Connections WHERE id = ?", {
+            return await sequelize.query("DELETE FROM Connections WHERE conexaooid = ?", {
                 replacements: [conexaooid] 
             });
         } catch (error) {

@@ -12,7 +12,7 @@ class RouteService {
 
     static async getRouteById(id) {
         try {
-            return await sequelize.query("SELECT * FROM Routes WHERE id = ?", {
+            return await sequelize.query("SELECT * FROM Routes WHERE rotaoid = ?", {
                 replacements: [id], 
                 type: QueryTypes.SELECT
             });
@@ -38,7 +38,7 @@ class RouteService {
     static async updateRouteById(id, { nome, descricao }) {
         try {
             return await sequelize.query(
-                "UPDATE Routes SET nome = ?, descricao = ? WHERE id = ?", 
+                "UPDATE Routes SET nome = ?, descricao = ? WHERE rotaoid = ?",
                 { replacements: [nome, descricao, id] ,
                     type: QueryTypes.UPDATE
                     }
@@ -50,7 +50,7 @@ class RouteService {
 
     static async deleteRouteById(id) {
         try {
-            return await sequelize.query("DELETE FROM Routes WHERE id = ?", {
+            return await sequelize.query("DELETE FROM Routes WHERE rotaoid = ?", {
                 replacements: [id] ,
                 type: QueryTypes.DELETE
             });

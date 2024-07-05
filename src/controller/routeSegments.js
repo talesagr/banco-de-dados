@@ -14,11 +14,22 @@ exports.addRouteSegment = async (req, res) => {
     }
 };
 
-exports.getAllRouteSegments = async (req, res) => {
+exports.getSegmentByRouteId = async (req, res) => {
     const routeId = req.params.routeId;
 
     try {
-        const segments = await RouteSegmentService.getAllRouteSegments(routeId);
+        const segments = await RouteSegmentService.getSegmentByRouteID(routeId);
+        res.json(segments);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Erro interno do servidor');
+    }
+};
+
+exports.getAllRouteSegments = async (req, res) => {
+    try {
+        console.log("GET ROUTE SEGMENTS")
+        const segments = await RouteSegmentService.getAllRouteSegments();
         res.json(segments);
     } catch (error) {
         console.error(error);

@@ -14,7 +14,7 @@ exports.getRouteById = async (req,res) => {
     const routeId = req.params.id;
 
     try {
-        const route = await RouteService.getRouteById(routeId);
+        const route = await RouteService.getRouteById(parseInt(routeId));
 
         if (route) {
             res.json(route);

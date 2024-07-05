@@ -9,10 +9,19 @@ class RouteSegmentService {
             throw error;
         }
     }
-
+    static async getSegmentByRouteID(routeId) {
+        try {
+            return await sequelize.query("SELECT * FROM RouteSegments where rotaoid = ?", {
+                replacements: [routeId],
+                type: QueryTypes.SELECT
+            });
+        } catch (error) {
+            throw error;
+        }
+    }
     static async getRouteSegmentById(segmentId) {
         try {
-            return await sequelize.query("SELECT * FROM RouteSegments WHERE id = ?", {
+            return await sequelize.query("SELECT * FROM RouteSegments WHERE segmentooid = ?", {
                 replacements: [segmentId], 
                 type: QueryTypes.SELECT
             });
@@ -38,7 +47,7 @@ class RouteSegmentService {
     static async updateRouteSegmentById(segmentId, { pontooid_de, pontooid_para, sequencia, instrucoes }) {
         try {
             return await sequelize.query(
-                "UPDATE RouteSegments SET pontooid_de = ?, pontooid_para = ?, sequencia = ?, instrucoes = ? WHERE id = ?", 
+                "UPDATE RouteSegments SET pontooid_de = ?, pontooid_para = ?, sequencia = ?, instrucoes = ? WHERE segmentooid = ?",
                 { replacements: [pontooid_de, pontooid_para, sequencia, instrucoes, segmentId] }
             );
         } catch (error) {
@@ -48,7 +57,7 @@ class RouteSegmentService {
 
     static async deleteRouteSegmentById(segmentId) {
         try {
-            return await sequelize.query("DELETE FROM RouteSegments WHERE id = ?", {
+            return await sequelize.query("DELETE FROM RouteSegments WHERE segmentooid = ?", {
                 replacements: [segmentId] 
             });
         } catch (error) {
