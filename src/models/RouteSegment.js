@@ -13,7 +13,7 @@ RouteSegment.init({
     type: DataTypes.INTEGER,
     allowNull: false,
     references: {
-      model: 'Route',
+      model: 'Routes',
       key: 'rotaoid',
     },
     onUpdate: 'CASCADE',
@@ -23,7 +23,7 @@ RouteSegment.init({
     type: DataTypes.INTEGER,
     allowNull: false,
     references: {
-      model: 'Point',
+      model: 'Points',
       key: 'pontooid',
     },
     onUpdate: 'CASCADE',
@@ -33,7 +33,7 @@ RouteSegment.init({
     type: DataTypes.INTEGER,
     allowNull: false,
     references: {
-      model: 'Point',
+      model: 'Points',
       key: 'pontooid',
     },
     onUpdate: 'CASCADE',

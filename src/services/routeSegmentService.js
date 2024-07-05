@@ -1,9 +1,10 @@
-const RouteSegment = require('../models/RouteSegment');
+const {query, QueryTypes} = require("../config/database");
+const {sequelize} = require("../models");
 
 class RouteSegmentService {
     static async getAllRouteSegments() {
         try {
-            return await RouteSegment.findAll();
+            return await sequelize.query("SELECT * FROM RouteSegments", { type: QueryTypes.SELECT });
         } catch (error) {
             throw error;
         }
@@ -11,15 +12,21 @@ class RouteSegmentService {
 
     static async getRouteSegmentById(segmentId) {
         try {
-            return await RouteSegment.findByPk(segmentId);
+            return await sequelize.query("SELECT * FROM RouteSegments WHERE id = ?", {
+                replacements: [segmentId], 
+                type: QueryTypes.SELECT
+            });
         } catch (error) {
             throw error;
         }
     }
 
-    static async addRouteSegment({ rotaoid, pontooid_de, pontooid_para, sequencia, instrucoes }) {
+    static async addRouteSegment( rotaoid, pontooid_de, pontooid_para, sequencia, instrucoes ) {
         try {
-            return await RouteSegment.create({ rotaoid, pontooid_de, pontooid_para, sequencia, instrucoes });
+            return await sequelize.query(
+                "INSERT INTO RouteSegments (rotaoid, pontooid_de, pontooid_para, sequencia, instrucoes) VALUES (?, ?, ?, ?, ?)", 
+                { replacements: [rotaoid, pontooid_de, pontooid_para, sequencia, instrucoes] }
+            );
         } catch (error) {
             throw error;
         }
@@ -27,13 +34,10 @@ class RouteSegmentService {
 
     static async updateRouteSegmentById(segmentId, { pontooid_de, pontooid_para, sequencia, instrucoes }) {
         try {
-            const routeSegment = await RouteSegment.findByPk(segmentId);
-            if (routeSegment) {
-                await routeSegment.update({ pontooid_de, pontooid_para, sequencia, instrucoes });
-                return routeSegment;
-            } else {
-                return null;
-            }
+            return await sequelize.query(
+                "UPDATE RouteSegments SET pontooid_de = ?, pontooid_para = ?, sequencia = ?, instrucoes = ? WHERE id = ?", 
+                { replacements: [pontooid_de, pontooid_para, sequencia, instrucoes, segmentId] }
+            );
         } catch (error) {
             throw error;
         }
@@ -41,13 +45,9 @@ class RouteSegmentService {
 
     static async deleteRouteSegmentById(segmentId) {
         try {
-            const routeSegment = await RouteSegment.findByPk(segmentId);
-            if (routeSegment) {
-                await routeSegment.destroy();
-                return routeSegment;
-            } else {
-                return null;
-            }
+            return await sequelize.query("DELETE FROM RouteSegments WHERE id = ?", {
+                replacements: [segmentId] 
+            });
         } catch (error) {
             throw error;
         }

@@ -1,12 +1,8 @@
-const express = require('express');
 const axios = require('axios');
-const router = express.Router();
-const PointModel = require('../services/pointService');
+const PointService = require('../services/pointService');
 const config = require('../config/apiKey')
 
-
-
-router.post('/points', async (req, res) => {
+exports.addPoint= async (req, res) => {
     const { address, nome, descricao } = req.body;
 
     try {
@@ -25,7 +21,7 @@ router.post('/points', async (req, res) => {
         const latitude = parseFloat(location.lat);
         const longitude = parseFloat(location.lng);
 
-        const newPoint = await PointModel.addPoint({
+        const newPoint = await PointService.addPoint({
             latitude: latitude,
             longitude: longitude,
             nome: nome,  
@@ -37,23 +33,23 @@ router.post('/points', async (req, res) => {
         console.error('Erro ao adicionar ponto:', error.message);
         res.status(500).send('Internal Server Error');
     }
-});
+};
 
-router.get('/points', async (req, res) => {
+exports.getAllPoints= async (req, res) => {
     try{
-        const points = await PointModel.getAllPoints();
+        const points = await PointService.getAllPoints();
         res.json(points);
     } catch (error){
         console.error(error);
         res.status(500).send('Erro interno do servidor')
     }
-})
+}
 
-router.get('/points/:id', async (req,res) => {
+exports.getPointById= async (req, res) => {
     const pointId = req.params.id;
 
     try {
-        const point = await PointModel.getPointById(pointId);
+        const point = await PointService.getPointById(pointId);
 
         if(point){
             res.json(point);
@@ -64,14 +60,14 @@ router.get('/points/:id', async (req,res) => {
         console.error(error);
         res.status(500).send('Erro interno do servidor')
     }
-})
+}
 
-router.put('/points/:id', async (req, res) =>{
+exports.updatePointById= async (req, res) => {
     const pointId = req.params.id;
     const { latitude, longitude, nome, descricao } = req.body;
 
     try {
-        const updatedPoint = await PointModel.updatePointById(pointId, {
+        const updatedPoint = await PointService.updatePointById(pointId, {
             latitude: latitude,
             longitude: longitude,
             nome: nome,
@@ -87,13 +83,14 @@ router.put('/points/:id', async (req, res) =>{
         console.error(error);
         res.status(500).send('Erro interno do servidor');
     }
-})
+}
 
-router.delete('/points/:id', async (req, res) => {
+
+exports.deletePointById= async (req, res) => {
     const pointId = req.params.id;
 
     try {
-        const deletedPoint = await PointModel.deletePointById(pointId);
+        const deletedPoint = await PointService.deletePointById(pointId);
 
         if (deletedPoint) {
             res.json(deletedPoint);
@@ -104,6 +101,4 @@ router.delete('/points/:id', async (req, res) => {
         console.error(error);
         res.status(500).send('Erro interno do servidor');
     }
-});
-
-module.exports = router;
+};

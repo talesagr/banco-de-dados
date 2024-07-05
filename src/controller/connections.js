@@ -1,85 +1,61 @@
-const express = require('express');
-const router = express.Router();
-const ConnectionService = require('../services/ConnectionService');
+const ConnectionService = require('../services/connectionService');
 
-router.post('/connections', async (req, res) => {
-    const { pontooid_de, pontooid_para, distancia, tempo, tipo_transporte } = req.body;
-
-    try {
-        const newConnection = await ConnectionService.addConnection(pontooid_de, pontooid_para, distancia, tempo, tipo_transporte);
-        res.json(newConnection);
-    } catch (error) {
-        console.error(error);
-        res.status(500).send('Erro interno do servidor');
-    }
-});
-
-router.get('/connections', async (req, res) => {
+exports.getAllConnections = async (req, res) => {
     try {
         const connections = await ConnectionService.getAllConnections();
-        res.json(connections);
+        res.status(200).json(connections);
     } catch (error) {
-        console.error(error);
-        res.status(500).send('Erro interno do servidor');
+        res.status(500).json({ error: error.message });
     }
-});
+};
 
-router.get('/connections/:connectionId', async (req, res) => {
-    const connectionId = req.params.connectionId;
-
+exports.getConnectionById = async (req, res) => {
     try {
-        const connection = await ConnectionService.getConnectionById(connectionId);
-
+        const connection = await ConnectionService.getConnectionById(req.params.id);
         if (connection) {
-            res.json(connection);
+            res.status(200).json(connection);
         } else {
-            res.status(404).send('Conexão não encontrada');
+            res.status(404).json({ message: 'Connection not found' });
         }
     } catch (error) {
-        console.error(error);
-        res.status(500).send('Erro interno do servidor');
+        res.status(500).json({ error: error.message });
     }
-});
+};
 
-router.put('/connections/:connectionId', async (req, res) => {
-    const connectionId = req.params.connectionId;
-    const { pontooid_de, pontooid_para, distancia, tempo, tipo_transporte } = req.body;
-
+exports.addConnection = async (req, res) => {
     try {
-        const updatedConnection = await ConnectionService.updateConnectionById(connectionId, {
-            pontooid_de,
-            pontooid_para,
-            distancia,
-            tempo,
-            tipo_transporte,
-        });
-
-        if (updatedConnection) {
-            res.json(updatedConnection);
-        } else {
-            res.status(404).send('Conexão não encontrada');
-        }
+        const { pontooid_de, pontooid_para, distancia, tempo, tipo_transporte } = req.body;
+        const newConnection = await ConnectionService.addConnection({ pontooid_de, pontooid_para, distancia, tempo, tipo_transporte });
+        res.status(201).json(newConnection);
     } catch (error) {
-        console.log(error);
-        res.status(500).send('Erro interno do servidor');
+        res.status(500).json({ error: error.message });
     }
-});
+};
 
-router.delete('/connections/:connectionId', async (req, res) => {
-    const connectionId = req.params.connectionId;
-
+exports.updateConnectionById = async (req, res) => {
     try {
-        const deletedConnection = await ConnectionService.deleteConnectionById(connectionId);
-
-        if (deletedConnection) {
-            res.json(deletedConnection);
+        const connection = await ConnectionService.getConnectionById(req.params.id);
+        if (connection) {
+            await ConnectionService.updateConnectionById(req.body);
+            res.status(200).json(connection);
         } else {
-            res.status(404).send('Conexão não encontrada');
+            res.status(404).json({ message: 'Connection not found' });
         }
     } catch (error) {
-        console.error(error);
-        res.status(500).send('Erro interno do servidor');
+        res.status(500).json({ error: error.message });
     }
-});
+};
 
-module.exports = router;
+exports.deleteConnectionById = async (req, res) => {
+    try {
+        const connection = await ConnectionService.getConnectionById(req.params.id);
+        if (connection) {
+            await ConnectionService.deleteConnectionById(req.params.id);
+            res.status(200).json({ message: 'Connection deleted successfully' });
+        } else {
+            res.status(404).json({ message: 'Connection not found' });
+        }
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};

@@ -8,7 +8,8 @@ module.exports = {
     host: process.env.DB_HOST,
     dialect: 'postgres',
     port: process.env.DB_PORT,
-    logging: false,  // Set to true to enable SQL query logging
+    logging: false,
+    quoteIdentifiers: false,
   },
   test: {
     username: process.env.DB_USER,
@@ -18,6 +19,7 @@ module.exports = {
     dialect: 'postgres',
     port: process.env.DB_PORT,
     logging: false,
+    quoteIdentifiers : false,
   },
   production: {
     username: process.env.DB_USER,
@@ -27,5 +29,6 @@ module.exports = {
     dialect: 'postgres',
     port: process.env.DB_PORT,
     logging: false,
+    quoteIdentifiers : false,
   }
 };

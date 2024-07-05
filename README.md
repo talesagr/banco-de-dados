@@ -93,11 +93,11 @@ GROUP BY r.rotaoid, r.nome, r.descricao;
 ## Procedures
 
 ``` SQL
-CREATE OR REPLACE PROCEDURE AddNewRoute(name VARCHAR, desc TEXT)
+CREATE OR REPLACE PROCEDURE AddNewRoute(nome VARCHAR, descricao TEXT)
 LANGUAGE plpgsql
 AS $$
 BEGIN
-    INSERT INTO Routes (nome, descricao) VALUES (name, desc);
+    INSERT INTO Routes (nome, descricao) VALUES (nome, descricao);
 END;
 $$;
 

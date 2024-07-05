@@ -13,7 +13,7 @@ Connection.init({
     type: DataTypes.INTEGER,
     allowNull: false,
     references: {
-      model: 'Point',
+      model: 'Points',
       key: 'pontooid',
     },
     onUpdate: 'CASCADE',
@@ -23,7 +23,7 @@ Connection.init({
     type: DataTypes.INTEGER,
     allowNull: false,
     references: {
-      model: 'Point',
+      model: 'Points',
       key: 'pontooid',
     },
     onUpdate: 'CASCADE',

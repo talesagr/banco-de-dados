@@ -1,22 +1,20 @@
-const express = require('express');
-const router = express.Router();
-const RouteModel = require('../services/routeService');
+const RouteService = require('../services/routeService');
 
-router.get('/routes', async (req, res) => {
+exports.getAllRoutes = async (req, res) => {
     try {
-        const routes = await RouteModel.getAllRoutes();
+        const routes = await RouteService.getAllRoutes();
         res.json(routes);
     } catch (error) {
         console.error(error);
         res.status(500).send('Erro interno do servidor');
     }
-});
+};
 
-router.get('/routes/:id', async (req, res) => {
+exports.getRouteById = async (req,res) => {
     const routeId = req.params.id;
 
     try {
-        const route = await RouteModel.getRouteById(routeId);
+        const route = await RouteService.getRouteById(routeId);
 
         if (route) {
             res.json(route);
@@ -27,25 +25,26 @@ router.get('/routes/:id', async (req, res) => {
         console.error(error);
         res.status(500).send('Erro interno do servidor');
     }
-});
-router.post('/routes', async (req, res) => {
+};
+
+exports.addRoute = async (req,res)=> {
     const { nome, descricao } = req.body;
 
     try {
-        const newRoute = await RouteModel.addRoute(nome,descricao);
+        const newRoute = await RouteService.addRoute(nome,descricao);
         res.json(newRoute);
     } catch (error) {
         console.error(error);
         res.status(500).send('Erro interno do servidor');
     }
-});
+};
 
-router.put('/routes/:id', async (req, res) => {
+exports.updateRouteById=async (req,res)=>{
     const routeId = req.params.id;
     const { nome, descricao } = req.body;
 
     try {
-        const updatedRoute = await RouteModel.updateRouteById(routeId,{
+        const updatedRoute = await RouteService.updateRouteById(routeId,{
             nome : nome,
             descricao: descricao,
         });
@@ -59,13 +58,13 @@ router.put('/routes/:id', async (req, res) => {
         console.error(e);
         res.status(500).send('Internal Server Error')
     }
-});
+};
 
-router.delete('/routes/:id', async (req, res) => {
+exports.deleteRouteById= async (req, res) => {
     const routeId = req.params.id;
 
     try {
-        const deletedRoute = await RouteModel.deleteRouteById(routeId);
+        const deletedRoute = await RouteService.deleteRouteById(routeId);
 
         if(deletedRoute){
             res.json(deletedRoute)
@@ -76,7 +75,4 @@ router.delete('/routes/:id', async (req, res) => {
         console.error(e);
         res.status(500).send('Internal Server Error')
     }
-})
-
-
-module.exports = router;
+}

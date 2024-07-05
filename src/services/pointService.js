@@ -1,31 +1,35 @@
-const Point = require('../models/Point')
+const {query, QueryTypes} = require("../config/database");
+const {sequelize} = require("../models");
 
-class PointController {
+class PointService {
     static async getAllPoints() {
         try {
-            return await Point.findAll();
-        } catch (error){
+            console.log("AQUI")
+            return await sequelize.query("SELECT * FROM Points", { type: QueryTypes.SELECT });
+        } catch (error) {
+            console.log("PAU AQUI")
+            console.log(error)
             throw error;
         }
     }
 
     static async getPointById(id) {
         try {
-            return await Point.findByPk(id)
-        } catch (error){
+            return await sequelize.query("SELECT * FROM Points WHERE id = ?", {
+                replacements: [id], 
+                type: QueryTypes.SELECT
+            });
+        } catch (error) {
             throw error;
         }
     }
 
     static async addPoint({ latitude, longitude, nome, descricao }) {
         try {
-            const point = await Point.create({
-                latitude: parseFloat(latitude),
-                longitude: parseFloat(longitude),
-                nome, 
-                descricao
-            })
-            return point
+            return await sequelize.query(
+                "INSERT INTO Points (latitude, longitude, nome, descricao) VALUES (?, ?, ?, ?)", 
+                { replacements: [latitude, longitude, nome, descricao] }
+            );
         } catch (error) {
             throw error;
         }
@@ -33,15 +37,10 @@ class PointController {
 
     static async updatePointById(id, { latitude, longitude, nome, descricao }) {
         try {
-            const point = await Point.findByPk(id)
-            if(!point){return null}
-            await point.update({
-                latitude: parseFloat(latitude),
-                longitude: parseFloat(longitude),
-                nome, 
-                descricao
-            })
-            return point
+            return await sequelize.query(
+                "UPDATE Points SET latitude = ?, longitude = ?, nome = ?, descricao = ? WHERE id = ?", 
+                { replacements: [latitude, longitude, nome, descricao, id] }
+            );
         } catch (error) {
             throw error;
         }
@@ -49,11 +48,9 @@ class PointController {
 
     static async deletePointById(id) {
         try {
-            const point = await Point.findByPk(id);
-            if(point){
-                await point.destroy()
-                return true;
-            }
+            return await sequelize.query("DELETE FROM Points WHERE id = ?", {
+                replacements: [id] 
+            });
         } catch (error) {
             throw error;
         }
@@ -61,4 +58,4 @@ class PointController {
 
 }
 
-module.exports = PointController;
+module.exports = PointService;
