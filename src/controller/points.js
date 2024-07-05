@@ -3,24 +3,9 @@ const PointService = require('../services/pointService');
 const config = require('../config/apiKey')
 
 exports.addPoint= async (req, res) => {
-    const { address, nome, descricao } = req.body;
+    const { latitude,longitude, nome, descricao } = req.body;
 
     try {
-        if (!address) {
-            return res.status(400).json({ error: 'O campo "address" é obrigatório.' });
-        }
-
-        const geocodingResponse = await axios.get('https://maps.googleapis.com/maps/api/geocode/json', {
-            params: {
-                address: address,
-                key: config.googleMapsApiKey,
-            },
-        });
-
-        const location = geocodingResponse.data.results[0].geometry.location;
-        const latitude = parseFloat(location.lat);
-        const longitude = parseFloat(location.lng);
-
         const newPoint = await PointService.addPoint({
             latitude: latitude,
             longitude: longitude,

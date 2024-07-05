@@ -2,7 +2,7 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.bulkInsert('Points', [
+    await queryInterface.bulkInsert('points', [
       {
         latitude: -23.55052,
         longitude: -46.633308,
@@ -31,6 +31,6 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.bulkDelete('Points', null, {});
+    await queryInterface.bulkDelete('points', null, {});
   }
 };

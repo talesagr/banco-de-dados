@@ -25,10 +25,10 @@ class TripService {
         const { rotaoid, data_partida, data_chegada } = trip;
         try {
             return await sequelize.query(
-                "INSERT INTO trips (rotaoid, data_partida, data_chegada, createdAt, updatedAt) VALUES (?, ?, ?, NOW(), NOW())",
+                "CALL AddNewTrip(:rotaoid, :data_partida, :data_chegada)",
                 {
-                    replacements: [rotaoid, data_partida, data_chegada],
-                    type: QueryTypes.INSERT
+                    replacements: {rotaoid, data_partida, data_chegada},
+                    type: QueryTypes.RAW
                 }
             );
         } catch (error) {

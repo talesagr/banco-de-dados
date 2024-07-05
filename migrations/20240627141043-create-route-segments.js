@@ -2,7 +2,7 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('RouteSegments', {
+    await queryInterface.createTable('routeSegments', {
       segmentooid: {
         type: Sequelize.INTEGER,
         primaryKey: true,
@@ -12,7 +12,7 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: 'Routes',
+          model: 'routes',
           key: 'rotaoid',
         },
         onUpdate: 'CASCADE',
@@ -22,7 +22,7 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: 'Points',
+          model: 'points',
           key: 'pontooid',
         },
         onUpdate: 'CASCADE',
@@ -32,7 +32,7 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: 'Points',
+          model: 'points',
           key: 'pontooid',
         },
         onUpdate: 'CASCADE',
@@ -58,6 +58,6 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('RouteSegments');
+    await queryInterface.dropTable('routeSegments');
   }
 };

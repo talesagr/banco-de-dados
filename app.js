@@ -5,6 +5,7 @@ const connectionsRoutes = require('./src/routes/connections');
 const routesRoutes = require('./src/routes/routes');
 const routeSegmentsRoutes = require('./src/routes/routeSegment');
 const tripRoutes = require('./src/routes/trips');
+const reportRoutes = require('./src/routes/reports');
 const sequelize = require('./src/config/database')
 
 const app = express();
@@ -17,6 +18,7 @@ app.use('/api', connectionsRoutes);
 app.use('/api', routesRoutes);
 app.use('/api', routeSegmentsRoutes);
 app.use('/api', tripRoutes);
+app.use('/api/reports', reportRoutes)
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}!`))
 

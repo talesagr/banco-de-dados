@@ -24,8 +24,11 @@ class RouteSegmentService {
     static async addRouteSegment( rotaoid, pontooid_de, pontooid_para, sequencia, instrucoes ) {
         try {
             return await sequelize.query(
-                "INSERT INTO RouteSegments (rotaoid, pontooid_de, pontooid_para, sequencia, instrucoes) VALUES (?, ?, ?, ?, ?)", 
-                { replacements: [rotaoid, pontooid_de, pontooid_para, sequencia, instrucoes] }
+                "CALL AddNewRouteSegment(:rotaoid, :pontooid_de, :pontooid_para, :sequencia, :instrucoes)",
+                {
+                    replacements: {rotaoid, pontooid_de, pontooid_para, sequencia, instrucoes} ,
+                    type: QueryTypes.RAW
+                }
             );
         } catch (error) {
             throw error;

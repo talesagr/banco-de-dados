@@ -13,7 +13,7 @@ RouteSegment.init({
     type: DataTypes.INTEGER,
     allowNull: false,
     references: {
-      model: 'Routes',
+      model: 'routes',
       key: 'rotaoid',
     },
     onUpdate: 'CASCADE',
@@ -23,7 +23,7 @@ RouteSegment.init({
     type: DataTypes.INTEGER,
     allowNull: false,
     references: {
-      model: 'Points',
+      model: 'points',
       key: 'pontooid',
     },
     onUpdate: 'CASCADE',
@@ -33,7 +33,7 @@ RouteSegment.init({
     type: DataTypes.INTEGER,
     allowNull: false,
     references: {
-      model: 'Points',
+      model: 'points',
       key: 'pontooid',
     },
     onUpdate: 'CASCADE',
@@ -50,7 +50,7 @@ RouteSegment.init({
 }, {
   sequelize,
   modelName: 'RouteSegment',
-  tableName: 'RouteSegments',
+  tableName: 'routeSegments',
   timestamps: true,
 });
 

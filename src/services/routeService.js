@@ -24,10 +24,10 @@ class RouteService {
     static async addRoute(nome, descricao) {
         try {
             return await sequelize.query(
-                "INSERT INTO Routes (nome, descricao) VALUES (?, ?)", 
+                "CALL AddNewRoute(:nome, :descricao)",
                 {
-                    replacements: [nome, descricao] ,
-                    type: QueryTypes.INSERT
+                    replacements: {nome, descricao} ,
+                    type: QueryTypes.RAW
                 }
             );
         } catch (error) {

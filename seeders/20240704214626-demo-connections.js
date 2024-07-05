@@ -2,7 +2,7 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.bulkInsert('Connections', [
+    await queryInterface.bulkInsert('connections', [
       {
         pontooid_de: 1,
         pontooid_para: 2,
@@ -25,6 +25,6 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.bulkDelete('Connections', null, {});
+    await queryInterface.bulkDelete('connections', null, {});
   }
 };

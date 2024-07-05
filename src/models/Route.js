@@ -20,7 +20,7 @@ Route.init({
 }, {
   sequelize,
   modelName: 'Route',
-  tableName: 'Routes',
+  tableName: 'routes',
   timestamps: true,
 });
 

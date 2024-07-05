@@ -28,7 +28,7 @@ Point.init({
 }, {
   sequelize,
   modelName: 'Point',
-  tableName: 'Points',
+  tableName: 'points',
   timestamps: true,
 });
 

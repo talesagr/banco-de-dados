@@ -13,7 +13,7 @@ Trip.init({
     type: DataTypes.INTEGER,
     allowNull: false,
     references: {
-      model: 'Routes',
+      model: 'routes',
       key: 'rotaoid',
     },
     onUpdate: 'CASCADE',
@@ -30,7 +30,7 @@ Trip.init({
 }, {
   sequelize,
   modelName: 'Trip',
-  tableName: '"Trips"',
+  tableName: 'trips',
   timestamps: true,
 });
 

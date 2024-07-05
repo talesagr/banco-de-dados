@@ -1,7 +1,7 @@
 'use strict';
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('Connections', {
+    await queryInterface.createTable('connections', {
       conexaooid: {
         type: Sequelize.INTEGER,
         primaryKey: true,
@@ -11,7 +11,7 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: 'Points',
+          model: 'points',
           key: 'pontooid',
         },
         onUpdate: 'CASCADE',
@@ -21,7 +21,7 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: 'Points',
+          model: 'points',
           key: 'pontooid',
         },
         onUpdate: 'CASCADE',
@@ -52,6 +52,6 @@ module.exports = {
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('Connections');
+    await queryInterface.dropTable('connections');
   }
 };

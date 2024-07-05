@@ -2,7 +2,7 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('Trips', {
+    await queryInterface.createTable('trips', {
       tripid: {
         type: Sequelize.INTEGER,
         primaryKey: true,
@@ -13,7 +13,7 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: 'Routes',
+          model: 'routes',
           key: 'rotaoid',
         },
         onUpdate: 'CASCADE',
@@ -39,6 +39,6 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('Trips');
+    await queryInterface.dropTable('trips');
   }
 };

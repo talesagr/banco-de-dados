@@ -57,7 +57,7 @@ npm run start
 ## Scripts de criação das tabelas:
 
 ``` SQL
-CREATE TABLE Points (
+CREATE TABLE points (
     pontooid SERIAL PRIMARY KEY,
     latitude FLOAT NOT NULL CHECK (latitude BETWEEN -90 AND 90),
     longitude FLOAT NOT NULL CHECK (longitude BETWEEN -180 AND 180),
@@ -65,13 +65,13 @@ CREATE TABLE Points (
     descricao TEXT
 );
 
-CREATE TABLE Routes (
+CREATE TABLE routes (
     rotaoid SERIAL PRIMARY KEY,
     nome VARCHAR(255) NOT NULL,
     descricao TEXT
 );
 
-CREATE TABLE RouteSegments (
+CREATE TABLE routeSegments (
     segmentooid SERIAL PRIMARY KEY,
     rotaoid INTEGER NOT NULL,
     pontooid_de INTEGER NOT NULL,
@@ -83,7 +83,7 @@ CREATE TABLE RouteSegments (
     FOREIGN KEY (pontooid_para) REFERENCES Points(pontooid) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
-CREATE TABLE Connections (
+CREATE TABLE connections (
     conexaooid SERIAL PRIMARY KEY,
     pontooid_de INTEGER NOT NULL,
     pontooid_para INTEGER NOT NULL,
@@ -100,10 +100,10 @@ CREATE TABLE Connections (
 ## Views
 
 ``` SQL
-CREATE VIEW ActiveRoutes AS
-SELECT r.rotaoid, r.nome, r.descricao, COUNT(rs.segmentooid) AS total_segments
-FROM Routes r
-JOIN RouteSegments rs ON r.rotaoid = rs.rotaoid
+CREATE VIEW activeRoutes AS
+SELECT r.rotaoid, r.nome, r.descricao, COUNT(rs.segmentooid) AS numero_segmentos
+FROM routes r
+JOIN routeSegments rs ON r.rotaoid = rs.rotaoid
 GROUP BY r.rotaoid, r.nome, r.descricao;
 
 ```
@@ -115,9 +115,46 @@ CREATE OR REPLACE PROCEDURE AddNewRoute(nome VARCHAR, descricao TEXT)
 LANGUAGE plpgsql
 AS $$
 BEGIN
-    INSERT INTO Routes (nome, descricao) VALUES (nome, descricao);
+    INSERT INTO routes (nome, descricao) VALUES (nome, descricao);
 END;
 $$;
+----
+CREATE OR REPLACE PROCEDURE public.addnewpoint(
+	IN latitude double precision,
+	IN longitude double precision,
+	IN nome character varying,
+	IN descricao text)
+LANGUAGE 'plpgsql'
+AS $BODY$
+BEGIN
+    INSERT INTO points (latitude, longitude, nome, descricao) VALUES (latitude, longitude, nome, descricao);
+END;
+$BODY$;
+------
+
+CREATE OR REPLACE PROCEDURE public.addnewroutesegment(
+	IN rotaoid integer,
+	IN pontooid_de integer,
+	IN pontooid_para integer,
+	IN sequencia integer,
+	IN instrucoes text)
+LANGUAGE 'plpgsql'
+AS $BODY$
+BEGIN
+    INSERT INTO routeSegments (rotaoid, pontooid_de, pontooid_para, sequencia, instrucoes) VALUES (rotaoid, pontooid_de, pontooid_para, sequencia, instrucoes);
+END;
+$BODY$;
+------
+CREATE OR REPLACE PROCEDURE public.addnewtrip(
+	IN rotaoid integer,
+	IN data_partida timestamp without time zone,
+	IN data_chegada timestamp without time zone)
+LANGUAGE 'plpgsql'
+AS $BODY$
+BEGIN
+    INSERT INTO trips (rotaoid, data_partida, data_chegada) VALUES (rotaoid, data_partida, data_chegada);
+END;
+$BODY$;
 
 ```
 
@@ -131,14 +168,14 @@ DECLARE
     total_distance FLOAT := 0;
 BEGIN
     SELECT SUM(distancia) INTO total_distance
-    FROM RouteSegments rs
-    JOIN Connections c ON rs.pontooid_de = c.pontooid_de AND rs.pontooid_para = c.pontooid_para
+    FROM routeSegments rs
+    JOIN connections c ON rs.pontooid_de = c.pontooid_de AND rs.pontooid_para = c.pontooid_para
     WHERE rs.rotaoid = rotaid;
 
     RETURN total_distance;
 END;
 $$;
-
+----
 CREATE OR REPLACE FUNCTION update_timestamp() RETURNS TRIGGER
 LANGUAGE plpgsql
 AS $$
@@ -147,31 +184,25 @@ BEGIN
     RETURN NEW;
 END;
 $$;
+-----
+
+CREATE OR REPLACE FUNCTION set_timestamps()
+RETURNS TRIGGER AS $$
+BEGIN
+    NEW."createdAt" = COALESCE(NEW."createdAt", NOW());
+    NEW."updatedAt" = NOW();
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
 
 ```
 
 ## Triggers
 
 ``` SQL
-
-CREATE TRIGGER update_points_timestamp
-BEFORE UPDATE ON Points
-FOR EACH ROW
-EXECUTE FUNCTION update_timestamp();
-
-CREATE TRIGGER update_routes_timestamp
-BEFORE UPDATE ON Routes
-FOR EACH ROW
-EXECUTE FUNCTION update_timestamp();
-
-CREATE TRIGGER update_routesegments_timestamp
-BEFORE UPDATE ON RouteSegments
-FOR EACH ROW
-EXECUTE FUNCTION update_timestamp();
-
-CREATE TRIGGER update_connections_timestamp
-BEFORE UPDATE ON Connections
-FOR EACH ROW
-EXECUTE FUNCTION update_timestamp();
+CREATE TRIGGER before_insert_or_update_points
+BEFORE INSERT OR UPDATE ON points
+FOR EACH ROW EXECUTE FUNCTION set_timestamps();
 
 ```

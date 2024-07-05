@@ -27,8 +27,10 @@ class PointService {
     static async addPoint({ latitude, longitude, nome, descricao }) {
         try {
             return await sequelize.query(
-                "INSERT INTO Points (latitude, longitude, nome, descricao) VALUES (?, ?, ?, ?)", 
-                { replacements: [latitude, longitude, nome, descricao] }
+                "CALL AddNewPoint(:latitude, :longitude, :nome, :descricao)", {
+                    replacements: {latitude, longitude, nome, descricao} ,
+                    type: QueryTypes.RAW
+                }
             );
         } catch (error) {
             throw error;

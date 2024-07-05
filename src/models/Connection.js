@@ -13,7 +13,7 @@ Connection.init({
     type: DataTypes.INTEGER,
     allowNull: false,
     references: {
-      model: 'Points',
+      model: 'points',
       key: 'pontooid',
     },
     onUpdate: 'CASCADE',
@@ -23,7 +23,7 @@ Connection.init({
     type: DataTypes.INTEGER,
     allowNull: false,
     references: {
-      model: 'Points',
+      model: 'points',
       key: 'pontooid',
     },
     onUpdate: 'CASCADE',
@@ -44,7 +44,7 @@ Connection.init({
 }, {
   sequelize,
   modelName: 'Connection',
-  tableName: 'Connections',
+  tableName: 'connections',
   timestamps: true,
 });
 
