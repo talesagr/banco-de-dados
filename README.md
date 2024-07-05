@@ -17,6 +17,50 @@ npm run start
 
 ```
 
+## Exemplo para reports:
+
+### URL : localhost:5000/api/reports/points?latMin=-20&latMax=20&longMin=-100&longMax=0
+``` JSON
+{
+    "pontooid": 16,
+    "latitude": -13.55452,
+    "longitude": -41.637308,
+    "nome": "Ponto K",
+    "descricao": "Descrição do Ponto K",
+    "createdat": "2024-07-05T03:34:18.524Z",
+    "updatedat": "2024-07-05T03:34:18.526Z"
+}
+```
+
+### URL : localhost:5000/api/reports/routes?name=3&description=3
+``` JSON
+[
+	{
+		"rotaoid": 5,
+		"nome": "Rota 3",
+		"descricao": "Descrição da Rota 3",
+		"createdat": "2024-07-05T03:34:18.527Z",
+		"updatedat": "2024-07-05T03:34:18.527Z"
+	},
+	{
+		"rotaoid": 14,
+		"nome": "Rota 3",
+		"descricao": "Descrição da Rota 3",
+		"createdat": "2024-07-05T03:34:55.005Z",
+		"updatedat": "2024-07-05T03:34:55.005Z"
+	},
+	{
+		"rotaoid": 23,
+		"nome": "Rota 3",
+		"descricao": "Descrição da Rota 3",
+		"createdat": "2024-07-05T03:36:30.586Z",
+		"updatedat": "2024-07-05T03:36:30.586Z"
+	}
+]
+```
+
+
+
 ## Exemplo de JSON para a tabela "conexoes" (connections):
 
 ### URL : localhost:5000/api/connections
