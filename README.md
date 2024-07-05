@@ -1,3 +1,21 @@
+# Aplicacao de rotas e viagens
+
+### Para rodar voce precisa fazer os seguinte comandos:
+
+Voce precisa preenchar os dados em .env
+
+Por se tratar de uma aplicacao com sequelize, se voce inserir qualquer dado de um banco de dados postgres ele ira automaticamente criar o banco e popular. Podendo facilmente ser utilizado em qualquer outro lugar
+
+``` bash
+npm install
+
+sequelize db:create
+sequelize db:migrate
+sequelize db:seed:all
+
+npm run start
+
+```
 
 ## Exemplo de JSON para a tabela "conexoes" (connections):
 
